@@ -3,7 +3,6 @@ using namespace std;
 
 
 int sumaIterativa(int n){
-
     int suma = 0; // Variable acumuladora
 
     for(int i = 1; i <= n; i++){
@@ -15,7 +14,6 @@ int sumaIterativa(int n){
 
 
 int sumaRecursiva(int n){
-
     if(n == 1){ // Caso default
         return 1;
     }
@@ -23,7 +21,6 @@ int sumaRecursiva(int n){
     else{
         return n + sumaRecursiva(n - 1); // Llama a la función hasta llegar al caso default
     }
-
 }
 
 
@@ -33,7 +30,6 @@ int sumaDirecta(int n){
 
 
 int main(){
-
     // Pide un valor de n al usuario
     int lim;
     cout << "Introduzca el valor limite: ";
@@ -45,5 +41,4 @@ int main(){
     cout << "Resultado con formula: " << sumaDirecta(lim) << endl;
 
     return 0;
-    
 }
