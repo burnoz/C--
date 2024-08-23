@@ -15,8 +15,8 @@ int factorial_rec_lineal(int n, int a){
 
 int main(){
     int num;
-
     cin >> num;
+    
     cout << "El factorial de " << num << " es: " << factorial_rec_lineal(num, 1);
 
     return 0;
