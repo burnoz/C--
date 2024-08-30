@@ -12,6 +12,21 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+
+//	Imprime el arreglo
+void printArray (int *A, int n){
+	int i;
+	cout<<"\nArreglo:\t";
+	
+	for (i = 0; i < n; i++){
+		cout<<' '<<A[i];	
+	}
+
+	cout << endl;
+
+	return;
+}
+
 //	Ordenamiento burbuja
 // Complejidad O(n^2)
 void bubbleSort(int *A, int n){
@@ -70,7 +85,7 @@ void selectionSort(int *A, int n){
 
 // Ordenamiento por insercion
 // Complejidad O(n^2)
-void insertionsort(int *A, int n){
+void insertionSort(int *A, int n){
 	int i, c, j;
 
 	for(i = 0; i < n; i ++){
@@ -88,22 +103,67 @@ void insertionsort(int *A, int n){
 
 // Ordenamiento por fusion (merge)
 // Complejidad O(nlog(n))
-void mergeSort(int *A, int n){
-
-}
-
-//	Print the array
-void printArray (int *A, int n){
-	int i;
-	cout<<"\nArreglo:\t";
+void merge(int *A, int n, int l, int r, int m){
+	int s1, s2, i, j, k;
 	
-	for (i = 0; i < n; i++){
-		cout<<' '<<A[i];	
+	s1 = m - l + 1;
+	s2 = r - m;
+
+	// Creación de arreglos de tamano dinamico
+	int *L = (int *) malloc(s1 * sizeof(int));
+	int *R = (int *) malloc(s2 * sizeof(int));
+
+	for(i = 0; i < s1; i++){
+		L[i] = A[l + i];
 	}
 
-	cout << endl;
+	for(j = 0; j < s2; j++){
+		R[j] = A[m + 1 + j];
+	}
 
-	return;
+	i = 0;
+	j = 0;
+	k = l;
+
+	while(i < s1 && j < s2){
+		if(L[i] <= R[j]){
+			A[k] = L[i];
+			i++;
+		}
+
+		else{
+			A[k] = R[j];
+			j++;
+		}
+
+		k++;
+	}
+
+	while(i < s1){
+		A[k] = L[i];
+		i++;
+		k++;
+	}
+
+	while(j < s2){
+		A[k] = R[j];
+		j++;
+		k++;
+	}
+}
+
+
+void mergeSort(int *A, int n, int l, int r){
+	int m;
+
+	if(l < r){
+		m = l + (r - l) / 2;
+
+		mergeSort(A, n, l, m);
+		mergeSort(A, n, m + 1, r);
+
+		merge(A, n, l, r, m);
+	}
 }
 
 
@@ -120,7 +180,7 @@ int main(int argc, char* argv[]){
 	cout << "\n\nSeleccion-Sort "<< endl;
 	selectionSort(asorted1, n);
 	printArray(asorted1, n);
-	
+
 	cout << "\n\nBubble-Sort "<< endl;
 	bubbleSort(asorted2, n);
 	printArray(asorted2, n);
@@ -130,6 +190,10 @@ int main(int argc, char* argv[]){
 	printArray(asorted3, n);
 
 	cout << "\n\nInsertion-Sort "<< endl;
-	swapSort(asorted4, n);
+	insertionSort(asorted4, n);
 	printArray(asorted4, n);
+
+	cout << "\n\nMerge-Sort "<< endl;
+	mergeSort(asorted5, n, 0, n - 1);
+	printArray(asorted5, n);
 }
