@@ -15,9 +15,7 @@ using std::endl;
 //	Ordenamiento burbuja
 // Complejidad O(n^2)
 void bubbleSort(int *A, int n){
-	int i;
-	int j;
-	int aux;
+	int i, j, aux;
 
 	for(i = 0; i < n; i ++){
 		for(j = 0; j < n - i - 1; j++){
@@ -35,9 +33,7 @@ void bubbleSort(int *A, int n){
 //	Ordenamiento por intercambio
 // Complejidad O(n^2)
 void swapSort (int *A, int n){
-	int i;
-	int j;
-	int aux;
+	int i, j, aux;
 
 	for(i = 0; i < n; i ++){
 		for(j = i + 1; j < n; j++){
@@ -55,17 +51,14 @@ void swapSort (int *A, int n){
 //	Ordenamiento por seleccion
 // Complejidad O(n^2)
 void selectionSort(int *A, int n){
-	int i;
-	int j;
-	int indexMin;
-	int aux;
+	int i, j, indexMin, aux;
 
 	for(i = 0; i < n; i++){
 		indexMin = i;
 
 		for(j = i + 1; j < n; j++){
 			if(A[j] < A[indexMin]){
-				indexMin =j;
+				indexMin = j;
 			}
 		}
 
@@ -73,6 +66,30 @@ void selectionSort(int *A, int n){
 		A[indexMin] = A[i];
 		A[i] = aux;
 	}
+}
+
+// Ordenamiento por insercion
+// Complejidad O(n^2)
+void insertionsort(int *A, int n){
+	int i, c, j;
+
+	for(i = 0; i < n; i ++){
+		c = A[i];
+		j = i - 1;
+
+		while(j >= 0 && A[j] > c){
+			A[j + 1] = A[j];
+			j--;
+		}
+
+		A[j + 1] = c;
+	}
+}
+
+// Ordenamiento por fusion (merge)
+// Complejidad O(nlog(n))
+void mergeSort(int *A, int n){
+
 }
 
 //	Print the array
@@ -95,6 +112,8 @@ int main(int argc, char* argv[]){
 	int asorted1[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
 	int asorted2[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
 	int asorted3[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
+	int asorted4[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
+	int asorted5[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
 	
 	printArray(asorted1, n);
 	
@@ -109,4 +128,8 @@ int main(int argc, char* argv[]){
 	cout << "\n\nSwap-Sort "<< endl;
 	swapSort(asorted3, n);
 	printArray(asorted3, n);
+
+	cout << "\n\nInsertion-Sort "<< endl;
+	swapSort(asorted4, n);
+	printArray(asorted4, n);
 }
