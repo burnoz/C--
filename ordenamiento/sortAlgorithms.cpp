@@ -166,6 +166,41 @@ void mergeSort(int *A, int n, int l, int r){
 	}
 }
 
+// Quicksort
+// Complejidad O(n^2)
+int partition(int *A, int n, int l, int r){
+	int pivot, aux, i, j;
+
+	pivot = A[r];
+	i = l - 1;
+
+	for(j = l; j < r - 1; j++){
+		if(A[j] < pivot){
+			i++;
+			aux = A[j];
+			A[j] = A[i];
+			A[i] = aux;
+		}
+	}
+
+	aux = A[i + 1];
+	A[i + 1] = A[r];
+	A[r] = aux;
+
+	return i + 1;
+}
+
+
+void quickSort(int *A, int n, int l, int r){
+	int pivot;
+	
+	if(l < r){
+		pivot = partition(A, n, l, r);
+		quickSort(A, n, l, pivot - 1);
+		quickSort(A, n, pivot + 1, r);
+	}
+}
+
 
 int main(int argc, char* argv[]){
 	int n = 10;						//	Elementos totales
@@ -174,6 +209,7 @@ int main(int argc, char* argv[]){
 	int asorted3[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
 	int asorted4[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
 	int asorted5[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
+	int asorted6[10] = { 8, 4, 1, 7, 9, 3, 5, 2, 10, 6 };
 	
 	printArray(asorted1, n);
 	
@@ -196,4 +232,8 @@ int main(int argc, char* argv[]){
 	cout << "\n\nMerge-Sort "<< endl;
 	mergeSort(asorted5, n, 0, n - 1);
 	printArray(asorted5, n);
+
+	cout << "\n\nQuick-Sort "<< endl;
+	mergeSort(asorted6, n, 0, n - 1);
+	printArray(asorted6, n);
 }
