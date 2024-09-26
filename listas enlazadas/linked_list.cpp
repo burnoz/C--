@@ -113,7 +113,7 @@ void List::insertLast(int newValue){
     this->size++;
 }
 
-// Inserta en un indice especifico
+// Inserta un nodo en un indice especifico
 bool List::insertAtIndex(int index, int newValue){
 	Node *aux = this->first;					//	Comenzamos en el primer link
 	Node *node = new Node(newValue);    //  Creamos el nodo nuevo
@@ -152,7 +152,7 @@ bool List::insertAtIndex(int index, int newValue){
 	return false; 
 }
 
-// 	Elimina el primer elemento de la lista
+// 	Elimina el primer nodo de la lista
 void List::deleteFirst(){	
     // Asigna first a un nodo auxiliar
 	Node *aux = this->first;
@@ -168,7 +168,7 @@ void List::deleteFirst(){
 	this->size--;
 }
 
-// 	Elimina el primer elemento de la lista
+// 	Elimina el ultimo nodo de la lista
 void List::deleteLast(){
 	// Nodo auxiliar
 	Node *aux = this->first;
@@ -191,7 +191,7 @@ void List::deleteLast(){
 	this->size--;
 }
 
-
+// Elimina un nodo en un indice especifico
 void List::deleteAtIndex(int index){
 	if(index == 0){
 		this->deleteFirst();
@@ -223,7 +223,7 @@ void List::deleteAtIndex(int index){
 	this->size--;
 }
 
-
+// Busca un nodo especifico en la lista
 Node* List::find(int value, int *index){
 	Node *aux = this->first; // Nodo auxiliar
 	int i = 0; // Variable contadora
@@ -246,7 +246,7 @@ Node* List::find(int value, int *index){
 	return NULL;
 }
 
-
+// Actualiza el valor de un elemento en un indice especifico
 void List::update(int new_value, int index){
 	Node *aux = this->first; // Nodo auxiliar
 	int i = 0; // Variable contadora
