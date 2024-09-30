@@ -1,12 +1,9 @@
-//g++ listaEnlazadaEj.cpp -o listaEnlazadaDoble; ./listaEnlazadaDoble
-
 #include <iostream>
 #include <sstream>
 #include <cstring>
 #include <string>
 
 using namespace std;
-
 
 // class node: un valor y un puntero a otro nodo
 template <class T>		//	Esta linea permite que podamos crear listas de cualquier tipo de dato
@@ -20,12 +17,11 @@ class Node{
 		Node<T> *prev; 	 	//	dir del nodo anterior
 		Node<T> *next;		//	dir del nodo siguiente
 		
-		
 		//	Que deberia recibir el contructor de la clase? 
 		//		un valor para guardar en el nodo
 		//	Que valores por default deberian tener prev y next? 
-		Node(T valor)
-		{	this->value = valor;
+		Node(T valor){	
+			this->value = valor;
 			this->prev = NULL;
 			this->next = NULL;
 		}
@@ -50,8 +46,7 @@ class List{
 		
 		//	Funciones similares a las de la lista simple
 
-
-		int getSize(){ return size; }	//	Funcion para obtener el tamanaño de la lista
+		int getSize(){ return size; }	//	Funcion para obtener el numero de elementos
 		void showList();				//	Funcion para mostrar la lista
 		void showListReverse();			//	Funcion para mostrar la lista en reversa
 		
@@ -68,58 +63,71 @@ class List{
 		Node<T>* find(T, int*);			//	Encontrar un valor	
 		void update(int, T);			//	Actualizar el valor de un indice
 };
-/**/
-// inserta en un indice especifico
+
+// Inserta en un indice especifico
 template<class T>
 bool List<T>::insertAtIndex(int index, T newValue){	
     Node<T> *node = new Node<T> (newValue);  
 	
-	//	insertar al inicio 
+	//	Insertar al inicio 
 	if (index == 0){	
         this->insertFirst(newValue); 
 		return true;
 	}
 
+	// Insertar al final
 	if (index == this->size){	
         this->insertLast(newValue); 
 		return true;
 	}
 
-	if (index < size/2){		//	cuando es mas barato insertar desde el inicio	
+	if(index < size/2){		//	Cuando es mas barato insertar desde el inicio	
         Node<T> *aux = first;
 		int i = 0; 
 
-		while(i < size/2){	
-            if (i == index - 1){	
+		// Recorre la lista
+		while(i < size/2){
+			// Verifica si se llego a la posicion anterior al indice dado
+            if(i == index - 1){
+				// Enlaza el nodo nuevo con la lista
                 node->prev = aux;
 				node->next = aux->next; 
 
 				node->next->prev = node; 
 				aux->next = node;
+
+				// Actualiza el numero de elementos
 				this->size++;
 				return true;
 			}
 
+			// Avanza en la lista
 			aux = aux->next;
 			i++;
 		}
 	}
 
-	else{  	//	cuando es mas barato insertar desde el final 
+	else{  	//	Cuando es mas barato insertar desde el final 
 		Node<T> *aux = last;
 		int i = this->size - 1;
 
+		// Recorre la lista (en reversa)
 		while(i > size/2){
+			// Verifica si se llego al indice
 			if(i == index){
+				// Enlaza el nodo nuevo con la lista
 				node->next = aux;
 				node->prev = aux->prev;
 
 				node->prev->next = node;
 				aux->prev = node;
+
+				// Actualiza el numero de elementos
 				this->size++;
 				return true;
 			}
 
+			// Retrocede en la lista
 			aux = aux->prev;
 			i--;
 		}
@@ -128,27 +136,32 @@ bool List<T>::insertAtIndex(int index, T newValue){
 	return false;
 }
 
+// Encontrar un valor en la lista
 template<class T>
-Node<T>* List<T>::find(T value, int *index){	
-	Node<T> *aux = first;
-	int i = 0;
+Node<T>* List<T>::find(T value, int *index){
+	Node<T> *aux = first; // Nodo auxiliar para recorrer la lista
+	int i = 0; // Variable contadora
 
-	while(i < this->size){	
-		if(aux->value == value){	
+	// Recorre la lista
+	while(i < this->size){
+		// Verifica si el elemento actual es el que se busca	
+		if(aux->value == value){
+			// Pasa el valor del indice y el nodo
 			*index = i;
 			return aux;
 		}
 
+		// Avanza en la lista
 		aux = aux->next;
 		i++;
 	}
 
+	// Caso en el que no encuentra el valor
 	*index = -1;
 	return NULL;
 }
-/*
-*/
-// inserta al inicio
+
+// Inserta al inicio
 template<class T>
 void List<T>::deleteFirst(){	
     //  Crear un  auxiliar que guarde la direccion de first
@@ -168,7 +181,7 @@ void List<T>::deleteFirst(){
 	// Ahora first es segundo
 	this->first = second;
 
-	// Decrementa el tamaño
+	// Disminuye el numero de elementos
 	this->size--;	
 	
 }
@@ -206,10 +219,9 @@ void List<T>::insertFirst(T newValue){
 	// El anterior a first es last
 	// El siguiente de last es first
 
-	//	Finalmente actualizar el tamaño de la lista
+	//	Finalmente actualizar el numero de elementos
 	this->size++;
 }
-
 
 // inserta al final
 template<class T>
@@ -244,9 +256,10 @@ void List<T>::insertLast(T newValue){
 	// El anterior a first es last
 	// El siguiente de last es first
 	
-	//	Finalmente actualizar el tamaño de la lista
+	//	Finalmente actualizar el numero de elementos
 	this->size++;
 }
+
 
 template<class T>
 void List<T>::showList(){	
@@ -257,10 +270,10 @@ void List<T>::showList(){
 	// Declara un contador i que inicie en 0
 	int i = 0;
 
-	// Imprime el tamaño de la lista
-	cout <<  this->size << " elementos" << endl;
+	// Imprime el numero de elementos
+	cout << this->size << " elementos" << endl;
 
-	// Mientras i sea menor que el tamaño... 
+	// Mientras i sea menor que el numero de elementos
 	while(i < this->size){	
         // Imprime el nodo
 		cout << "El [" << i << "] elemento es:\t" << aux->value << endl;
@@ -275,13 +288,14 @@ void List<T>::showList(){
 	cout << endl;
 }
 
+
 template<class T>
 void List<T>::showListReverse(){
 	// Crea un nodo auxiliar para iterar en la lista
 	// auxiliar inicia al final de la lista
 	Node<T> *aux = last;
 
-	// Declara un contador i con el tamaño de la lista
+	// Declara un contador i con el numero de elementos en la lista
 	int i = this->size - 1;
 
 	while(i >= 0){
@@ -300,22 +314,56 @@ void List<T>::showListReverse(){
 
 
 template<class T>
-void List<T>::update(int index, T newValue){
-	
+void List<T>::update(int index, T newValue){	
+	int i;
+
+	if(index < this->size/2){ // Cuando es mas conveniente actualizar desde el inicio
+		Node<T> *aux = this->first; // Nodo auxiliar que inicia en first
+		i = 0; // Variable contadora
+
+		// Recorre la lista comenzando desde el inicio
+		while(i < this->size/2){
+			// Verifica si se llego al indice
+			if(i == index){
+				// Actualiza el valor
+				aux->value = newValue;
+			}
+			
+			// Avanza en la lista
+			aux = aux->next;
+			i++;
+		}
+	}
+
+	else{ // Cuando es mas conveniente actualizar desde el final
+		Node<T> *aux = this->last; // Nodo auxiliar que inicia en last
+		i = this->size - 1; // Variable contadora
+
+		// Recorre la lista comenzando desde el final
+		while(i > this->size/2){
+			// Verifica si se llego al indice a actualizar
+			if(i == index){
+				// Actualiza el valor
+				aux->value = newValue;
+			}
+			
+			// Retrocede en la lista
+			aux = aux->prev;
+			i--;
+		}
+	}
 }
 
 
 int main(int argc, char* argv[]) {	
  	List<int> dList;
 
-	cout << "boing" << endl;
+	// cout << "boing" << endl;
 
  	dList.insertLast(2); 	dList.showList(); 	dList.showListReverse();
  	dList.insertLast(3); 	dList.showList(); 	dList.showListReverse();
 	dList.insertFirst(1); 	dList.showList(); 	dList.showListReverse();
 	dList.insertFirst(0); 	dList.showList(); 	dList.showListReverse();
-
-
 
 	cout << "\n Insert at index\n " << endl;
 
@@ -328,5 +376,8 @@ int main(int argc, char* argv[]) {
 	int index = -1;
 	Node<int> *address = dList.find(3, &index);
 	
-	cout << "dir: " << address << " index: " << index << " value: " << address->value << endl;	
+	cout << "dir: " << address << " index: " << index << " value: " << address->value << endl;
+
+	dList.update(4, 10); 	dList.showList(); 	dList.showListReverse();
+	dList.update(1, 10); 	dList.showList(); 	dList.showListReverse();
 }
