@@ -163,7 +163,7 @@ Node<T>* List<T>::find(T value, int *index){
 	return NULL;
 }
 
-// Inserta al inicio
+// Elimina el primer elemento
 // Complejidad O(1)
 template<class T>
 void List<T>::deleteFirst(){	
