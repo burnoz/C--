@@ -65,6 +65,7 @@ class List{
 };
 
 // Inserta en un indice especifico
+// Complejidad O(n)
 template<class T>
 bool List<T>::insertAtIndex(int index, T newValue){	
     Node<T> *node = new Node<T> (newValue);  
@@ -137,6 +138,7 @@ bool List<T>::insertAtIndex(int index, T newValue){
 }
 
 // Encontrar un valor en la lista
+// Complejidad O(n)
 template<class T>
 Node<T>* List<T>::find(T value, int *index){
 	Node<T> *aux = first; // Nodo auxiliar para recorrer la lista
@@ -162,6 +164,7 @@ Node<T>* List<T>::find(T value, int *index){
 }
 
 // Inserta al inicio
+// Complejidad O(1)
 template<class T>
 void List<T>::deleteFirst(){	
     //  Crear un  auxiliar que guarde la direccion de first
@@ -187,6 +190,7 @@ void List<T>::deleteFirst(){
 }
 
 // inserta al inicio
+// Complejidad O(1)
 template<class T>
 void List<T>::insertFirst(T newValue){	
     // Crear un nodo nuevo
@@ -224,6 +228,7 @@ void List<T>::insertFirst(T newValue){
 }
 
 // inserta al final
+// Complejidad O(1)
 template<class T>
 void List<T>::insertLast(T newValue){	
     // Crear un nodo nuevo
@@ -260,7 +265,8 @@ void List<T>::insertLast(T newValue){
 	this->size++;
 }
 
-
+// Muestra la lista
+// Complejidad O(n)
 template<class T>
 void List<T>::showList(){	
     // Crea un nodo auxiliar para iterar en la lista
@@ -288,7 +294,8 @@ void List<T>::showList(){
 	cout << endl;
 }
 
-
+// Muestra la lista en reversa
+// Complejidad O(n)
 template<class T>
 void List<T>::showListReverse(){
 	// Crea un nodo auxiliar para iterar en la lista
@@ -312,7 +319,8 @@ void List<T>::showListReverse(){
 	cout << endl;
 }
 
-
+// Actualiza un valor en la lista
+// Complejidad O(n)
 template<class T>
 void List<T>::update(int index, T newValue){	
 	int i;
