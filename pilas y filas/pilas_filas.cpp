@@ -24,7 +24,8 @@ class Stack{
 
 		bool push (int valor);
 		int pop();
-		int getSize();		
+		int getSize();
+		int getTop();
 		bool isEmpty();
 		bool isFull();
 
@@ -48,7 +49,7 @@ bool Stack::push (int valor){
 // Extrae el elemento del top
 int Stack::pop(){	
 	// Primero revisa que no este vacia
-	if (size > 0){	
+	if(size > 0){	
 		int val = arreglo[top];
 		top--;
 		size--;
@@ -65,6 +66,10 @@ int Stack::pop(){
 int Stack::getSize(){
 	return this->size;
 }
+
+// Devuelve el siguiente elemento
+int Stack::getTop()
+{	return arreglo[top];	}
 
 // Verifica si el stack esta vacio
 bool Stack::isEmpty()
@@ -110,9 +115,11 @@ class Queue {
 
 	bool enqueue(int);
 	int dequeue();
+	int getSize();
 	int getFront();
 	bool isEmpty( );  
 	bool isFull( );
+
 	void show();
 };
 
@@ -141,7 +148,7 @@ int Queue::dequeue(){
 	if(!this->isEmpty()){
 		int val = data[front % this->maxSize];
 		size--;
-		end--;
+		front++;
 		return val;
 	}
 
@@ -151,16 +158,23 @@ int Queue::dequeue(){
 
 
 int Queue::getFront(){	
-    return 0;
+	return data[front % this->maxSize];
 }
 
 
-bool Queue::isEmpty()
-{	return this->size == 0;	}
+int Queue::getSize(){	
+	return this->size;	
+}
 
 
-bool Queue::isFull()
-{	return this->size == maxSize;	}
+bool Queue::isEmpty(){	
+	return this->size == 0;	
+}
+
+
+bool Queue::isFull(){	
+	return this->size == maxSize;
+}
 
 
 void Queue::show(){
@@ -169,6 +183,113 @@ void Queue::show(){
 	for(i = this->front; i < this->end; i++){
         cout << "data["<< i % this->maxSize <<"]: " << data[i % this->maxSize] << endl;	
     }
+
+	cout << endl;
+}
+
+
+class element{
+	public:
+		int data;
+		int priority;
+};
+
+
+class PQueue{
+	private:
+		element *data;
+		int maxSize;
+		int size;
+
+	public:
+		PQueue(int maxSize){
+			this->maxSize = maxSize;
+			this->data = new element[maxSize];
+			this->size = 0;
+		}
+
+		~PQueue(){
+			delete[] this->data;
+		}
+
+		bool enqueue(int, int);
+		int dequeue();
+		int getFront();
+		int getSize();
+		bool isEmpty();
+		bool isFull();
+
+		void show();
+};
+
+
+bool PQueue::enqueue(int value, int priority){
+	if(size < maxSize){
+		data[size].data = value;
+		data[size].priority = priority;
+		size++;
+		return true;
+	}
+
+	cout << "Priority Queue llena" << endl;
+	return false;
+}
+
+
+int PQueue::dequeue(){
+	if(!isEmpty()){
+		int front = getFront();
+		int value = data[front].data;
+
+		for(int i = front; i < size - 1; i++){
+			data[i] = data[i + 1];
+		}
+
+		size--;
+		return value;
+	}
+
+	cout << "Priority Queue vacia" << endl;
+	return -1;
+}
+
+
+int PQueue::getFront(){
+	if(!isEmpty()){
+		int front = 0;
+		for(int i = 1; i < size; i++){
+			if(data[i].priority < data[front].priority){
+				front = i;
+			}
+		}
+
+		return front;
+	}
+
+	cout << "Priority Queue vacia" << endl;
+	return -1;
+}
+
+
+int PQueue::getSize(){
+	return size;
+}
+
+
+bool PQueue::isEmpty(){
+	return size == 0;
+}
+
+
+bool PQueue::isFull(){
+	return size == maxSize;
+}
+
+
+void PQueue::show(){
+	for(int i = 0; i < size; i++){
+		cout << "data["<< i <<"]: " << data[i].data << "\t priority: " << data[i].priority << endl;
+	}
 
 	cout << endl;
 }
@@ -200,9 +321,23 @@ int main(int argc, char  *argv[]){
     queue->show();
 
 	val = queue->dequeue();
-	cout << "Sale " << val << endl;;
+	cout << "Sale " << val << endl;
 
 	queue->show();
+
+	PQueue *pqueue = new PQueue(maxSize);
+
+	pqueue->enqueue(4, 1);
+	pqueue->enqueue(7, 1);
+	pqueue->enqueue(6, 3);
+	pqueue->enqueue(5, 2);
+
+	pqueue->show();
+
+	val = pqueue->dequeue();
+	cout << "Sale " << val << endl;
+
+	pqueue->show();
 
 	return 0;
 }
