@@ -186,7 +186,6 @@ void List<T>::deleteFirst(){
 
 	// Disminuye el numero de elementos
 	this->size--;	
-	
 }
 
 // inserta al inicio
