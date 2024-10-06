@@ -77,7 +77,7 @@ bool List<T>::insertAtIndex(int index, T newValue){
 	}
 
 	// Insertar al final
-	if (index == this->size){	
+	if (index == this->size - 1){
         this->insertLast(newValue); 
 		return true;
 	}
@@ -163,6 +163,61 @@ Node<T>* List<T>::find(T value, int *index){
 	return NULL;
 }
 
+// Elimina un elemento en un indice especifico
+// Complejidad O(n)
+template<class T>
+void List<T>::deleteAtIndex(int index){
+    // Elimina el primer elemento
+    if(index == 0){
+        deleteFirst();
+        return;
+    }
+
+    // Elimina el ultimo elemento
+    if (index == this->size - 1){
+        deleteLast();
+        return;
+    }
+
+    Node<T> *aux;	// Nodo auxiliar
+
+    // Cuando es mas barato eliminar desde el inicio
+    if (index < size/2){
+		// Inicia auxiliar en first
+        aux = first;
+
+		// Recorre la lista
+        int i = 0;
+        while (i < index){
+            aux = aux->next;
+            i++;
+        }
+    }
+
+    // Cuando es mas barato eliminar desde el final
+    else{
+		// Inicia auxiliar en last
+        aux = last;
+
+		// Recorre la lista (en reversa)
+        int i = size - 1;
+        while (i > index){
+            aux = aux->prev;
+            i--;
+        }
+    }
+
+    // Conecta los elementos a los lados del nodo a eliminar
+    aux->prev->next = aux->next;
+    aux->next->prev = aux->prev;
+
+    // Elimina el nodo
+    delete aux;
+
+    // Actualiza el numero de elementos
+    this->size--;
+}
+
 // Elimina el primer elemento
 // Complejidad O(1)
 template<class T>
@@ -186,6 +241,24 @@ void List<T>::deleteFirst(){
 
 	// Disminuye el numero de elementos
 	this->size--;	
+}
+
+// Elimina el ultimo elemento
+// Complejidad O(1)
+template<class T>
+void List<T>::deleteLast(){	
+	// Crear un auxiliar que guarde la direccion de last
+	Node<T> *aux = this->last;
+
+	// Asignar last al penultimo nodo
+	this->last = aux->prev;
+	this->last->next = first;
+
+	// Eliminar el nodo
+	delete aux;
+
+	// Disminuir el tamaño de la lista
+	this->size--;
 }
 
 // inserta al inicio
@@ -347,7 +420,7 @@ void List<T>::update(int index, T newValue){
 		i = this->size - 1; // Variable contadora
 
 		// Recorre la lista comenzando desde el final
-		while(i > this->size/2){
+		while(i >= this->size/2){
 			// Verifica si se llego al indice a actualizar
 			if(i == index){
 				// Actualiza el valor
@@ -366,25 +439,33 @@ int main(int argc, char* argv[]) {
  	List<int> dList;
 
 	// cout << "boing" << endl;
-
+	cout << "Insert Last\n" << endl;
  	dList.insertLast(2); 	dList.showList(); 	dList.showListReverse();
  	dList.insertLast(3); 	dList.showList(); 	dList.showListReverse();
+
+	cout << "\n Insert First\n" << endl;
 	dList.insertFirst(1); 	dList.showList(); 	dList.showListReverse();
 	dList.insertFirst(0); 	dList.showList(); 	dList.showListReverse();
 
 	cout << "\n Insert at index\n " << endl;
-
 	dList.insertAtIndex(4, 5); 	dList.showList(); 	dList.showListReverse();	
     dList.insertAtIndex(4, 4); 	dList.showList(); 	dList.showListReverse();
 
-
+	cout << "\n Delete First\n" << endl;
 	dList.deleteFirst(); 	dList.showList(); 	dList.showListReverse();
 
-	int index = -1;
-	Node<int> *address = dList.find(3, &index);
-	
-	cout << "dir: " << address << " index: " << index << " value: " << address->value << endl;
+	cout << "\n Delete Last\n" << endl;
+	dList.deleteLast(); 	dList.showList(); 	dList.showListReverse();
 
-	dList.update(4, 10); 	dList.showList(); 	dList.showListReverse();
+	cout << "\n Delete at index\n" << endl;
+	dList.deleteAtIndex(2); 	dList.showList(); 	dList.showListReverse();
+
+	cout << "\n Find\n" << endl;
+	int index = -1;
+	Node<int> *address = dList.find(2, &index);
+	cout << "dir: " << address << " index: " << index << " value: " << address->value << endl << endl;
+
+	cout << "\n Update\n" << endl;
+	dList.update(2, 10); 	dList.showList(); 	dList.showListReverse();
 	dList.update(1, 10); 	dList.showList(); 	dList.showListReverse();
 }
