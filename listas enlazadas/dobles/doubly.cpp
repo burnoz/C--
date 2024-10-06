@@ -77,7 +77,7 @@ bool List<T>::insertAtIndex(int index, T newValue){
 	}
 
 	// Insertar al final
-	if (index == this->size - 1){
+	if (index == this->size){
         this->insertLast(newValue); 
 		return true;
 	}
@@ -247,17 +247,17 @@ void List<T>::deleteFirst(){
 // Complejidad O(1)
 template<class T>
 void List<T>::deleteLast(){	
-	// Crear un auxiliar que guarde la direccion de last
+	// Nodo auxiliar que guarda la direccion de last
 	Node<T> *aux = this->last;
 
-	// Asignar last al penultimo nodo
+	// El penultimo elemento se vuelve el ultimo y lo enlaza con el primero
 	this->last = aux->prev;
 	this->last->next = first;
 
-	// Eliminar el nodo
+	// Elimina el nodo
 	delete aux;
 
-	// Disminuir el tamaño de la lista
+	// Actualiza el numero de elementos
 	this->size--;
 }
 
