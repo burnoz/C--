@@ -498,7 +498,7 @@ int main(){
     pqueue->enqueue(3, 1);
     pqueue->enqueue(2, 2);
     pqueue->enqueue(4, 3);
-    pqueue->show();    
+    pqueue->show();   
 
     value = pqueue->dequeue();
     cout << "Sale: " << value << endl;
