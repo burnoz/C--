@@ -63,7 +63,133 @@ class PQueue{
             this->size = 0;
             this->maxSize = maxSize;
         }
+
+        // Destructor
+        ~PQueue(){
+            // Elimina todos los nodos
+            while(first != NULL){
+                pNode *aux = first;
+                first = first->next;
+                delete aux;
+            }
+        }
+
+        // Funciones de la fila prioritaria
+        bool enqueue(int, int);
+        int dequeue();
+        int getSize();
+        int getFront();
+        bool isEmpty();
+        bool isFull();
+        void show();
 };
+
+// Agrega un nuevo elemento en la fila
+// Complejidad O(n)
+bool PQueue::enqueue(int value, int priority){
+    if(!this->isFull()){
+        // Crea un nuevo nodo con el elemento a agregar
+        pNode *node = new pNode(value, priority);
+
+        // Conecta el nodo con la lista
+        if(first == NULL){
+            first = node;
+            last = node;
+        }
+
+        else{
+            pNode *aux = first;
+            while(aux != NULL && aux->priority <= priority){
+                aux = aux->next;
+            }
+
+            if(aux == NULL){
+                last->next = node;
+                node->prev = last;
+                last = node;
+            }
+
+            else if(aux == first){
+                node->next = first;
+                first->prev = node;
+                first = node;
+            }
+
+            else{
+                node->next = aux;
+                node->prev = aux->prev;
+                aux->prev->next = node;
+                aux->prev = node;
+            }
+        }
+
+        size++;
+        return true;
+    }
+
+    cout << "Fila de prioridad llena" << endl;
+    return false;
+}
+
+// Elimina el elemento con mayor prioridad
+// Complejidad: O(1)
+int PQueue::dequeue(){
+    if(!this->isEmpty()){
+        int value = first->value;
+        pNode *aux = first;
+        first = first->next;
+        delete aux;
+        size--;
+        return value;
+    }
+
+    return -1;
+}
+
+// Obtiene el numero de elementos
+// Complejidad: O(1)
+int PQueue::getSize(){
+    return size;
+}
+
+// Obtiene el valor del elemento con mayor prioridad
+int PQueue::getFront(){
+    if(this->isEmpty()){
+        return -1;
+    }
+
+    return first->value;
+}
+
+// Verifica si la lista esta vacia
+// Complejidad: O(1)
+bool PQueue::isEmpty(){
+    return size == 0;
+}
+
+// Verifica si la lista esta llena
+// Complejidad O(1)
+bool PQueue::isFull(){
+    return this->size == this->maxSize;
+}
+
+// Muestra los elementos de la lista
+// Complejidad: O(n)
+void PQueue::show(){
+    int i = 0;
+
+    cout << "Numero de elementos en la fila de prioridad:\t" << this->getSize() << endl;
+
+    pNode *aux = this->first;
+
+    while(aux != NULL){
+        cout << "data[" << i << "]:\t" << aux->value << "\t priority: " << aux->priority << endl;
+        aux = aux->next;
+        i++;
+    }
+
+    cout << endl;
+}
 
 // Fila con lista enlazada doble
 class Queue{
@@ -363,4 +489,18 @@ int main(){
     value = queue->dequeue();
     cout << "Sale: " << value << endl;
     queue->show();
+
+    cout << "-----------------------" << endl;
+
+    PQueue *pqueue = new PQueue(max);
+    pqueue->enqueue(1, 8);
+    pqueue->enqueue(3, 3);
+    pqueue->enqueue(3, 1);
+    pqueue->enqueue(2, 2);
+    pqueue->enqueue(4, 3);
+    pqueue->show();    
+
+    value = pqueue->dequeue();
+    cout << "Sale: " << value << endl;
+    pqueue->show();
 }
