@@ -37,7 +37,11 @@ class BST{
 		void remove(int);
 		void showTree();
 
-		// agregar recorridos
+		// Recorridos (agregar entre parentesis al padre, ej. 25(-1) 20(25))
+		void preorder();
+		void inorder();
+		void postorder();
+		
 };
 
 NodeTree* BST::search(int value){	
@@ -120,7 +124,62 @@ void BST::insert(int value){
 }
 
 void BST::remove(int value){
+	NodeTree *aux = search(value);
 
+	if(aux != NULL){
+		NodeTree *parent = aux->up;
+
+		// El nodo a eliminar es una hoja
+		if(aux->left == NULL && aux->right == NULL){
+			if(aux->data < parent->data){
+				parent->left = NULL;
+			}
+
+			else{
+				parent->right = NULL;
+			}
+
+			delete aux;
+		}
+
+		// El nodo a eliminar tiene un hijo
+		else if(aux->left == NULL || aux->right == NULL){
+			if(aux->left != NULL){
+				if(aux->data < parent->data){
+					parent->left = aux->left;
+				}
+
+				else{
+					parent->right = aux->left;
+				}
+
+				aux->left->up = parent;
+			}
+
+			else{
+				if(aux->data < parent->data){
+					parent->left = aux->right;
+				}
+
+				else{
+					parent->right = aux->right;
+				}
+
+				aux->right->up = parent;
+			}
+
+			delete aux;
+		}
+
+		// El nodo a eliminar tiene dos hijos
+		else{
+
+		}
+	}
+
+	else{
+		cout << "El nodo no existe" << endl;
+	}
 }
 
 int main(int argc, char  *argv[]){		
