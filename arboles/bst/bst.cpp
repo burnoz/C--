@@ -275,7 +275,8 @@ NodeTree* BST::search(int value){
             return aux;
 		}
 	} 
-	// Que pasa en este punto??
+
+	// Caso en que el valor no se encuentra en el arbol
     cout << "Valor " << value << " no encontrado" << endl;
 	return NULL;
 }
@@ -567,12 +568,12 @@ void BST::levelorder(NodeTree *auxroot){
 }
 
 int main(int argc, char  *argv[]){		
+	cout << "Paso 1" << endl;
     BST *bst = new BST(25);
 
 	NodeTree *aux = bst->search(25);
 	aux = bst->search(30);
-
-	cout << "Paso 1" << endl;
+	
 	bst->insert(20);
 	bst->insert(34);
 	bst->insert(2);
