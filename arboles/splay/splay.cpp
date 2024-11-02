@@ -155,6 +155,7 @@ class NodeTree{
 	
 		NodeTree(int value){	
             data = value;
+			level = 0;
 			left = NULL;
 			right = NULL;
 			up = NULL;
@@ -183,8 +184,9 @@ class SplayTree{
 
 		// Funcion de splay
 		void splay(NodeTree*);
-};
 
+		void update(NodeTree*, int);
+};
 
 // Busqueda de un valor en el arbol
 // Complejidad: O(log n) si el arbol esta balanceado, O(n) en el peor de los casos
@@ -208,6 +210,7 @@ NodeTree* SplayTree::search(int value){
 		// si no es mayor, ni menor, debe ser igual... 
 		else{
             cout << "Valor " << value << " encontrado" << endl;
+			splay(aux);
             return aux;
 		}
 	} 
@@ -233,7 +236,10 @@ void SplayTree::insert(int value){
 
 		// mientras aux no sea null... 
 		// agrega un return cuando consigas agregar el nodo nuevo... 
-		while(aux != NULL){ 	
+		while(aux != NULL){
+			// Actualiza el nivel del nodo
+			newNode->level = newNode->level + 1;
+
             // revisa a que lado de aux deberia quedar el nodo nuevo
 			// Va a la izquierda si es menor que el valor en aux
 			// y a la derecha si no
@@ -264,11 +270,16 @@ void SplayTree::insert(int value){
                 }
 			}
 		}
+
+		// Realiza el splay del nodo nuevo
+		splay(newNode);
 	}
 	
     else{
         cout << "El nodo ya existe" << endl;
 	}
+
+	// search(value);
 }
 
 // Elimina un nodo del arbol
@@ -378,7 +389,8 @@ void SplayTree::remove(int value){
 	}
 }
 
-
+// Muestra el arbol por niveles
+// Complejidad: O(n)
 void SplayTree::levelorder(NodeTree *auxroot){
     QueueList<NodeTree*> *queue = new QueueList<NodeTree*>(100);
     NodeTree *aux;
@@ -418,4 +430,148 @@ void SplayTree::levelorder(NodeTree *auxroot){
 
         cout << "lvl: " << aux->level << endl;
     }
+}
+
+// Zig: Rotacion a la izquierda
+// Complejidad: O(1)
+NodeTree* SplayTree::zig(NodeTree *node) {
+    NodeTree *y = node->left;
+
+	node->left = y->right;
+
+	if(y->right != NULL){ 
+		y->right->up = node;
+	}
+
+	y->right = node;
+	y->up = node->up;
+
+	if(node->up != NULL){
+		if(node->up->left == node){
+			node->up->left = y;
+		}
+		
+		else{
+			node->up->right = y;
+		}
+	}
+	
+	node->up = y;
+
+    return y;
+}
+
+// Zag: Rotacion a la derecha
+// Complejidad: O(1)
+NodeTree* SplayTree::zag(NodeTree *node) {
+    NodeTree *y = node->right;
+
+	node->right = y->left;
+
+	if(y->left != NULL){
+		y->left->up = node;
+	}
+
+	y->left = node;
+	y->up = node->up;
+
+	if(node->up != NULL){
+		if(node->up->left == node){
+			node->up->left = y;
+		} 
+		
+		else{
+			node->up->right = y;
+		}
+	}
+	
+	node->up = y;
+
+    return y;
+}
+
+// Funcion de splay
+// Complejidad: O(log n) si el arbol esta balanceado, O(n) en el peor de los casos
+void SplayTree::splay(NodeTree *node) {
+    while (node->up != NULL) {
+        NodeTree *parent = node->up;
+        NodeTree *grandparent = parent->up;
+
+        if(grandparent == NULL){ // Se llega a root
+            if(node == parent->left){ // Zig
+                root = zig(parent);
+            }
+			
+			else{ // Zag
+                root = zag(parent);
+            }
+        } 
+		
+		else if(node == parent->left && parent == grandparent->left){ // Zig-Zig
+            zig(grandparent);
+            root = zig(parent);
+        } 
+		
+		else if(node == parent->right && parent == grandparent->right){ // Zag-Zag
+            zag(grandparent);
+            root = zag(parent);
+        } 
+		
+		else if(node == parent->left && parent == grandparent->right){ // Zig-Zag
+            zig(parent);
+            root = zag(grandparent);
+        } 
+		
+		else{ // Zag-Zig
+            zag(parent);
+            root = zig(grandparent);
+        }
+    }
+
+	update(root, 0);
+}
+
+// Actualiza el nivel de los nodos
+// Complejidad: O(n)
+void SplayTree::update(NodeTree *node, int level) {
+    if(node == NULL){
+		return;
+	}
+    
+	node->level = level;
+    update(node->left, level + 1);
+    update(node->right, level + 1);
+}
+
+
+int main(){
+	// Inserts:  1, 7, 8, 24, 30, 9.   Mostrar el arbol
+	SplayTree *tree = new SplayTree(1);
+
+	tree->insert(7);
+	tree->insert(8);
+	tree->insert(24);
+	tree->insert(30);
+	tree->insert(9);
+
+	tree->levelorder(tree->root);
+	cout << endl;
+
+	// Delete 7. Mostrar el arbol
+	tree->remove(7);
+
+	tree->levelorder(tree->root);
+	cout << endl;
+
+	// Buscar 9.
+	tree->search(9);
+
+	tree->levelorder(tree->root);
+	cout << endl;
+
+	// Insert 5 y 10. Mostrar el arbol.
+	tree->insert(5);
+	tree->insert(10);
+
+	tree->levelorder(tree->root);
 }
