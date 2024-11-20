@@ -5,16 +5,15 @@
 
 using namespace std;
 
-//	Una clase para un elemento de la tabla
+// Clase para un elemento de la tabla
 template<class T>
 class Element{
 	public:
-		string str_key;		//	Llave string, como "Ana"
-		int int_key;		//	Llave entera, resultante de la llave string
-		int h_key;		//	Indice real asignado con base en int_key
-		T item;		//	El objeto asociado con la llave
-
-		bool free;		//	Una bandera para saber si este elemento de la tabla esta libre o no
+		string str_key;		// Llave string, como "Ana"
+		int int_key;		// Llave entera, resultante de la llave string
+		int h_key;		    // Indice real asignado con base en int_key
+		T item;		        // El objeto asociado con la llave
+		bool free;		    // Una bandera para saber si este elemento de la tabla esta libre o no
 
 		//	Constructor
 		Element<T>(){	
@@ -26,15 +25,14 @@ class Element{
 		}
 };
 
-//	Una clase que sera la tabla hash
+// Clase para la tabla hash
 template<class T>
 class Hash{	
     public:
-		int maxSize;	//	tamaño maximo
-        int currentSize;    //	tamaño actual	
-        int i;    // contador de colisiones
-		Element<T> **table;	//	puntero a arreglo de los elementos
-		
+		int maxSize;	    // Tamaño maximo
+        int currentSize;    // Tamaño actual	
+        int i;              // Contador de colisiones
+		Element<T> **table;	// Puntero a arreglo de los elementos
 		
 		Hash(int size){
             int j;
@@ -48,11 +46,11 @@ class Hash{
             }
 		}
 
-		void show();				//	ver toda la tabla
-		void insert(string, T);		//	agregar un elemento nuevo, recibe key y value
-		void remove(string);		//	remover uno por su key
-        void update(string, T);     //  cambia el valor de una llave
-		int find(string);			//	encontrar el indice de una key
+		void show();				// Ver toda la tabla
+		void insert(string, T);		// Agregar un elemento nuevo, recibe key y value
+		void remove(string);		// Remover uno por su key
+        void update(string, T);     // Cambia el valor de una llave
+		int find(string);			// Encontrar el indice de una key
 };
 
 
@@ -60,7 +58,7 @@ template<class T>
 void Hash<T>::show(){	
     int j;
 
-	//	Muestra toda la tabla, su indice, char_key, int_key, int_key real y valor almacenado
+	// Muestra toda la tabla, su indice, char_key, int_key, int_key real y valor almacenado
 	for (j =0; j < maxSize; j++){	
         cout << j << " " << table[j]->str_key << " " << table[j]->int_key << " " << table[j]->h_key << " " << table[j]->item << endl; 	
     }
@@ -71,7 +69,7 @@ void Hash<T>::show(){
 // Inserta un elemento en la tabla
 // Complejidad: O(1)
 template<class T> 
-void Hash<T>::insert(string str_key, T value){  // Recibe algo como insert( "Annie", 23)
+void Hash<T>::insert(string str_key, T value){  // Recibe algo como insert("Annie", 23)
     int key = 0;
     int h_key;
     int flag;
