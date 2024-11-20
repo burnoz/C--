@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
+
 using namespace std;
 
+// Clase para stack
 class Stack{
 	private:
 		int *data;
@@ -59,7 +61,7 @@ bool Stack::isEmpty(){
 	return this->top == -1;	
 }
 
-
+// Clase para queue
 class Queue{
 	private:
 		int *data;
